@@ -42,15 +42,16 @@ export const InputContainer = styled.div`
     }
 `;
 
-export const Input = styled.input.attrs( ( { type, id, name, value, handleInputChange, placeholder } ) => ( {
+export const Input = styled.input.attrs( ( { type, id, name, value, onChange, placeholder } ) => ( {
     type: type || 'text',
     id: id || '',
     name,
     value,
-    onChange: handleInputChange,
+    onChange,
     placeholder: placeholder || '',
     autoComplete: 'off'
 } ) )`
+    display: ${ ( { d_none } ) => d_none ? 'none' : 'inline-block' };
     width: 100%;
     background: ${ ( { theme } ) => theme.colors.light_cyan };
     border-radius: .5rem;
@@ -75,10 +76,18 @@ export const Tip = styled.section`
 export const TipOptions = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: .5rem;
+    grid-gap: 1rem;
+
+    input[type="radio"]:checked + label {
+        background: ${ ( { theme } ) => theme.colors.cyan };
+        color: ${ ( { theme } ) => theme.colors.dark_green };
+    }
 `;
 
-export const TipOption = styled.div`
+export const TipOption = styled.label.attrs( props => ({
+    htmlFor: props.htmlFor
+}) )`
+    display: block;
     text-align: center;
     padding: 1rem;
     color: white;
@@ -87,6 +96,7 @@ export const TipOption = styled.div`
     border-radius: 10px;
     font-weight: 700;
     transition: all .3s ease;
+    cursor: pointer;
 
     &:hover {
         background: ${ ( { theme } ) => theme.colors.cyan };

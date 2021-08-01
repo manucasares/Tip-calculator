@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { BsFillPersonFill } from "react-icons/bs";
 
@@ -27,11 +27,17 @@ const tipOptions = [ 5, 10, 15, 25, 50 ];
 
 export const Calculator = () => {
 
-    const [ { bill, custom, people }, handleInputChange ] = useForm( {
+    const [ { bill, tip, custom, people }, handleInputChange ] = useForm( {
         bill: '',
+        tip: '',
         custom: '',
         people: '',
     } );
+
+    useEffect(() => {
+        
+        console.log(tip)
+    }, [ tip ])
 
     return (
         <CalculatorContainer>
@@ -42,8 +48,8 @@ export const Calculator = () => {
                     <Input
                         id="bill"
                         name="bill"
-                        // value={ bill }
-                        // onChange={ handleInputChange }
+                        value={ bill }
+                        onChange={ handleInputChange }
                         placeholder="0.00"
                     />
                 </InputContainer>
@@ -53,14 +59,24 @@ export const Calculator = () => {
                 <Label as="p"> Select Tip % </Label>
                 <TipOptions>
                     { tipOptions.map( option => (
-                        <TipOption key={ option }>
-                            { option }%
-                        </TipOption>
+                        <div key={ option }>
+                            <Input
+                                type="radio"
+                                id={ option }
+                                name="tips"
+                                value={ tip }
+                                onChange={ handleInputChange }
+                                d_none
+                            />
+                            <TipOption htmlFor={ option } >
+                                { option }%
+                            </TipOption>
+                        </div>
                     ) ) }
                     <Input
                         name="custom"
-                        // value={ bill }
-                        // onChange={ handleInputChange }
+                        value={ custom }
+                        onChange={ handleInputChange }
                         placeholder="Custom"
                         txt_align="center"
                     />
@@ -74,8 +90,8 @@ export const Calculator = () => {
                     <Input
                         id="people"
                         name="people"
-                        // value={ people }
-                        // onChange={ handleInputChange }
+                        value={ people }
+                        onChange={ handleInputChange }
                         placeholder="1"
                     />
                 </InputContainer>
