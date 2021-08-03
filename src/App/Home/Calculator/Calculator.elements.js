@@ -13,10 +13,20 @@ export const CalculatorContainer = styled.main`
     border-radius: 10px;
     box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
     padding: 1.2rem;
+
+    @media ${ ( { theme } ) => theme.mediaQueries.above768 } {
+        /* grid-template-columns: 34% 64%; */
+        /* grid-gap: 0; */
+        grid-template-areas:
+            'bill   result'
+            'tip    result'
+            'people result'
+        ;
+    }
 `;
 
 export const Bill = styled.div`
-    grid-area: 'bill';
+    grid-area: bill;
 `;
 
 export const Label = styled.label.attrs( props => ( {
@@ -74,7 +84,7 @@ export const Input = styled.input.attrs( ( { type, id, name, value, onChange, pl
 `;
 
 export const Tip = styled.section`
-    grid-area: 'tip';
+    grid-area: tip;
 `;
 
 export const TipOptions = styled.div`
@@ -109,7 +119,7 @@ export const TipOption = styled.label.attrs( props => ({
 `;
 
 export const People = styled.section`
-    grid-area: 'people';
+    grid-area: people;
 `;
 
 export const PeopleText = styled.div`
@@ -126,9 +136,10 @@ export const ErrorPeople = styled.p`
 `;
 
 export const Results = styled.section`
-    grid-area: 'result';
+    grid-area: result;
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
     gap: 2.5rem;
     background: ${ ( { theme } ) => theme.colors.dark_green };
     border-radius: 10px;

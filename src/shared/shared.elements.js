@@ -8,5 +8,5 @@ export const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
-    gap: 7.5rem;
+    gap: 4rem;
 `;

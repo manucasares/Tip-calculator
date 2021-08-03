@@ -10,6 +10,15 @@ export const useForm = ( initialState = {} ) => {
 
     const handleInputChange = ({ target }) => {
 
+        if ( target.name === 'custom' ) {
+            setValues({
+                ...values,
+                custom: target.value,
+                tip: target.value
+            });
+            return;
+        }
+
         setValues({
             ...values,
             [ target.name ]: target.value

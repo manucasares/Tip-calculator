@@ -31,15 +31,16 @@ export const Calculator = () => {
 
     const [ tipXPerson, setTipXPerson ] = useState();
     const [ totalXPerson, setTotalXPerson ] = useState();
-    const [ errorPeople, setErrorPeople ] = useState( false )
+    const [ errorPeople, setErrorPeople ] = useState( false );
 
     const [ formValues, handleInputChange, reset ] = useForm( {
         bill: '',
         tip: '',
         people: '1',
+        custom: ''
     } );
 
-    const { bill, tip, people } = formValues;
+    const { bill, tip, people, custom } = formValues;
 
     useEffect( () => {
         
@@ -62,10 +63,10 @@ export const Calculator = () => {
         setTotalXPerson( ( total / number_people ).toFixed( 2 ) );
 
         // Seteamos la propina por persona
-        setTipXPerson( ( number_tip / number_people ).toFixed( 2 ) );
+        let tipXPerson = tip / people;
+        setTipXPerson( tipXPerson.toFixed( 2 ) );
 
-
-    }, [ formValues.tip, bill, tip, people ] );
+    }, [ formValues.tip, bill, tip, people, totalXPerson ] );
     
     return (
         <CalculatorContainer>
@@ -103,8 +104,8 @@ export const Calculator = () => {
                         </div>
                     ) ) }
                     <Input
-                        name="tip"
-                        value={ tip }
+                        name="custom"
+                        value={ custom }
                         onChange={ handleInputChange }
                         placeholder="Custom"
                         txt_align="center"
@@ -151,7 +152,7 @@ export const Calculator = () => {
 
                 <ResetBtn
                     disabled={ !totalXPerson || totalXPerson === '0.00' }
-                    onClick={ () => reset() }
+                    onClick={ reset }
                 >
                     Reset
                 </ResetBtn>

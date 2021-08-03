@@ -13,6 +13,7 @@ export const GlobalStyles = createGlobalStyle`
     body {
         overflow-x: hidden;
         background: hsl(185, 41%, 84%);
+        padding: 1.3rem 0;
     }
 
     #root {
