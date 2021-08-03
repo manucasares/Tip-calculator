@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { BsFillPersonFill } from "react-icons/bs";
 
@@ -19,25 +19,53 @@ import {
     Tip, 
     TipOption, 
     TipOptions,
-    ResetBtn} from './Calculator.elements';
+    ResetBtn,
+    PeopleText,
+    ErrorPeople} from './Calculator.elements';
 
 
-const tipOptions = [ 5, 10, 15, 25, 50 ];
+const tipOptions = [ '5', '10', '15', '25', '50' ];
 
 
 export const Calculator = () => {
 
-    const [ { bill, tip, custom, people }, handleInputChange ] = useForm( {
+    const [ tipXPerson, setTipXPerson ] = useState();
+    const [ totalXPerson, setTotalXPerson ] = useState();
+    const [ errorPeople, setErrorPeople ] = useState( false )
+
+    const [ formValues, handleInputChange ] = useForm( {
         bill: '',
         tip: '',
-        custom: '',
-        people: '',
+        people: '1',
     } );
 
-    useEffect(() => {
+    const { bill, tip, people } = formValues;
+
+    useEffect( () => {
         
-        console.log(tip)
-    }, [ tip ])
+        const number_people = Number( people );
+
+        // People no puede ser 0 o menor
+        if ( number_people < 1 || !number_people ) {
+            setErrorPeople( true );
+            return;
+        }
+
+        setErrorPeople( false );
+
+        const number_bill = Number( bill );
+        const number_tip = Number( formValues.tip );
+        
+        // Seteamos el total por persona
+        const tip = number_bill * ( number_tip / 100 );
+        const total = number_bill + tip;
+        setTotalXPerson( ( total / number_people ).toFixed( 2 ) );
+
+        // Seteamos la propina por persona
+        setTipXPerson( ( number_tip / number_people ).toFixed( 2 ) );
+
+
+    }, [ formValues ] );
 
     return (
         <CalculatorContainer>
@@ -63,19 +91,22 @@ export const Calculator = () => {
                             <Input
                                 type="radio"
                                 id={ option }
-                                name="tips"
-                                value={ tip }
+                                name="tip"
+                                value={ option }
+                                checked={ option === tip }
                                 onChange={ handleInputChange }
                                 d_none
                             />
-                            <TipOption htmlFor={ option } >
+                            <TipOption
+                                htmlFor={ option }
+                            >
                                 { option }%
                             </TipOption>
                         </div>
                     ) ) }
                     <Input
-                        name="custom"
-                        value={ custom }
+                        name="tip"
+                        value={ tip }
                         onChange={ handleInputChange }
                         placeholder="Custom"
                         txt_align="center"
@@ -84,7 +115,12 @@ export const Calculator = () => {
             </Tip>
 
             <People>
-                <Label htmlFor="people"> Number of People </Label>
+                <PeopleText>
+                    <Label htmlFor="people"> Number of People </Label>
+                    { ( errorPeople ) &&
+                        <ErrorPeople> { people === '' ? "Can't be Empty" : 'Not valid Number' } </ErrorPeople>
+                    }
+                </PeopleText>
                 <InputContainer>
                     <BsFillPersonFill />
                     <Input
@@ -93,9 +129,9 @@ export const Calculator = () => {
                         value={ people }
                         onChange={ handleInputChange }
                         placeholder="1"
+                        errorPeople={ errorPeople }
                     />
                 </InputContainer>
-
             </People>
 
             <Results>
@@ -104,7 +140,7 @@ export const Calculator = () => {
                         <Description> Tip Amount </Description>
                         <Divided> / person </Divided>
                     </DescriptionContainer>
-                    <Amount> $0.00 </Amount>
+                    <Amount> ${ tipXPerson || '0.00' } </Amount>
                 </Result>
 
                 <Result>
@@ -112,10 +148,14 @@ export const Calculator = () => {
                         <Description> Total </Description>
                         <Divided> / person </Divided>
                     </DescriptionContainer>
-                    <Amount> $0.00 </Amount>
+                    <Amount> ${ totalXPerson || '0.00' } </Amount>
                 </Result>
 
-                <ResetBtn> Reset </ResetBtn>
+                <ResetBtn
+                    disabled={ !totalXPerson || totalXPerson === '0.00' }
+                >
+                    Reset
+                </ResetBtn>
 
             </Results>
         </CalculatorContainer>

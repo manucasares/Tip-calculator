@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const CalculatorContainer = styled.main`
     display: grid;
@@ -26,7 +26,7 @@ export const Label = styled.label.attrs( props => ( {
     font-size: ${ ( { theme } ) => theme.fz[ '200' ] };
     color: ${ ( { theme } ) => theme.colors.dark_green };
     font-weight: 700;
-    margin-bottom: .35rem;
+    padding: .5rem 0;
 `;
 
 export const InputContainer = styled.div`
@@ -67,6 +67,10 @@ export const Input = styled.input.attrs( ( { type, id, name, value, onChange, pl
         text-align: ${ ( { txt_align } ) => txt_align || 'right' };
         font-size: ${ ( { theme } ) => theme.fz[ '400' ] };
     }
+
+    &, &:focus {
+        border: ${ ( { errorPeople } ) => errorPeople && '2px solid red' };
+    }
 `;
 
 export const Tip = styled.section`
@@ -106,6 +110,19 @@ export const TipOption = styled.label.attrs( props => ({
 
 export const People = styled.section`
     grid-area: 'people';
+`;
+
+export const PeopleText = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    `;
+
+export const ErrorPeople = styled.p`
+    color: red;
+    font-size: ${ ( { theme } ) => theme.fz[ '300' ] };
+    font-weight: 700;
+    padding: .5rem 0;
 `;
 
 export const Results = styled.section`
@@ -151,6 +168,20 @@ export const ResetBtn = styled.button`
     border: none;
     border-radius: 10px;
     color: rgba(255, 255, 255, .5);
-    background: ${ ( { theme } ) => theme.colors.grayish_cyan };
+    ${
+        ( { disabled } ) =>
+            ( disabled )
+                ? 
+                css`
+                    background: ${ ( { theme } ) => theme.colors.grayish_cyan };
+                    color: rgba(255, 255, 255, .6);
+                `
+                :
+                css`
+                    background: ${ ( { theme } ) => theme.colors.cyan };
+                    color: ${ ( { theme } ) => theme.colors.dark_green };
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, .4);
+                `
+    }
     font-weight: 700;
 `;
