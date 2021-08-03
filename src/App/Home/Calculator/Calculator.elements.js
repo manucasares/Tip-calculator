@@ -180,7 +180,7 @@ export const ResetBtn = styled.button`
                 css`
                     background: ${ ( { theme } ) => theme.colors.cyan };
                     color: ${ ( { theme } ) => theme.colors.dark_green };
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, .4);
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, .3);
                 `
     }
     font-weight: 700;

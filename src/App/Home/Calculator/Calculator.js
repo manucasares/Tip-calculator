@@ -33,7 +33,7 @@ export const Calculator = () => {
     const [ totalXPerson, setTotalXPerson ] = useState();
     const [ errorPeople, setErrorPeople ] = useState( false )
 
-    const [ formValues, handleInputChange ] = useForm( {
+    const [ formValues, handleInputChange, reset ] = useForm( {
         bill: '',
         tip: '',
         people: '1',
@@ -65,8 +65,8 @@ export const Calculator = () => {
         setTipXPerson( ( number_tip / number_people ).toFixed( 2 ) );
 
 
-    }, [ formValues ] );
-
+    }, [ formValues.tip, bill, tip, people ] );
+    
     return (
         <CalculatorContainer>
             <Bill>
@@ -97,9 +97,7 @@ export const Calculator = () => {
                                 onChange={ handleInputChange }
                                 d_none
                             />
-                            <TipOption
-                                htmlFor={ option }
-                            >
+                            <TipOption htmlFor={ option }>
                                 { option }%
                             </TipOption>
                         </div>
@@ -118,7 +116,7 @@ export const Calculator = () => {
                 <PeopleText>
                     <Label htmlFor="people"> Number of People </Label>
                     { ( errorPeople ) &&
-                        <ErrorPeople> { people === '' ? "Can't be Empty" : 'Not valid Number' } </ErrorPeople>
+                        <ErrorPeople> { people === '' ? "Can't be Empty" : 'Not valid Value' } </ErrorPeople>
                     }
                 </PeopleText>
                 <InputContainer>
@@ -153,6 +151,7 @@ export const Calculator = () => {
 
                 <ResetBtn
                     disabled={ !totalXPerson || totalXPerson === '0.00' }
+                    onClick={ () => reset() }
                 >
                     Reset
                 </ResetBtn>
